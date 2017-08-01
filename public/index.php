@@ -9,3 +9,5 @@ include_once VIEWS_DIRECTORY.$router[$page][0];
 
 // On inclut le pied HTML du document
 include_once VIEWS_DIRECTORY.'footer.php';
+
+
