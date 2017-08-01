@@ -23,10 +23,10 @@
 				<hr>
 
 				<nav>
-					<ul class="nav nav_justified">
-						<li>Page d'accueil</li>
-						<li>Oeuvres</li>
-						<li>Auteurs</li>			
+					<ul class="nav nav-justified">
+						<li><a>Page d'accueil</a></li>
+						<li><a>Oeuvres</a></li>
+						<li><a>Auteurs</a></li>			
 					</ul>
 				</nav>
 
