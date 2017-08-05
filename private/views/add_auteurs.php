@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $save = true;
 
     // Recupérer les données de $_POST
-    $token = isset($_POST['token']) ? $_POST['token'] : null;
+    
     $nom = isset($_POST['nom']) ? $_POST['nom'] : null;
     $prenom = isset($_POST['prenom']) ? $_POST['prenom'] : null;
     $livres = isset($_POST['livres']) ? $_POST['livres'] : null;
@@ -20,37 +20,80 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     var_dump($_POST);
 
-    // Controler l'intégrité du token
-    if ($_SESSION['token'] !== $token) {
-       $save = false;
-       setFlashbag("danger", "Le token est invalide."); 
-    }
+   
 
-    // Vérification du champ nom
+    // Vérification du champ livres
     if (empty($nom)) {
         $save = false;
-        setFlashbag("danger", "Veuillez saisir un nom");
+        echo "Veuillez saisir un nom";
     }
 
-    // Definition du token
-    $_SESSION['token'] = getToken();
+      // Vérification du champ prénom
+    if (empty($prenom)) {
+        $save = false;
+        echo "Veuillez saisir un prenom";
+    }
+
+      // Vérification du champ livres
+    if (empty($livres)) {
+        $save = false;
+       echo "Veuillez saisir une oeuvre";
+    }
+
+      // Vérification du champ photo
+    if (empty($photo)) {
+        $save = false;
+       echo "Veuillez saisir un lien url";
+    }
+
+    // On enregistre l'auteur dans la BDD
+    if ($save) {
+       if (auteurExists($nom)) {
+          $save = false;
+          echo "Un auteur est déjà enregistré avec son nom";
+       }
+
+       // Enregistre l'auteur
+         $auteurUser = addAuteur(array(
+            "nom" => $nom,
+            "prenom" => $prenom,
+            "livres" => $livres,
+            "photo" => $photo,
+            
+            ));  
+
+       // Identification de l'auteur
+       $_SESSION['auteurUser'] = [
+            "id" => $idUser,
+            "nom" => $nom,
+            "prenom" => $prenom,
+            "livres" => $livres,
+            "photo" => $photo,
+         ];
+
+         // Flashbag Success
+         echo "Auteur ajouté";
+
+     } 
+
 }
+
+
 
 ?>
 
 
 
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Ajout d'un auteur</title>
-	</head>
-	<body>
+
 	<div class="page_header">
 		<h1>Ajout d'un auteur</h1>
+
+		  <? //php getFlashbag(); ?>
+
 		<form method="POST">
 			<label>Nom :</label>
 			<input type="text" name="nom">
+		
 			<br><br>
 			
 			<label>Prénom :</label>
@@ -68,5 +111,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<button>Envoyer</button>
 		</form>
 	</div>
-	</body>
-</html>
